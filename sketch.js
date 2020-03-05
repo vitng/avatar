@@ -14,7 +14,7 @@ let bubble3;
 let r = 20;
 
 let ellipses = [];
-
+let sketchStarted = false;
 //function preload(){
 //img = loadImage ('ocean.jpg');
 //}
@@ -23,61 +23,74 @@ function setup() {
   createCanvas(500, 500);
 
 //Ellipse Object = new Ellipse (100);
-  
+
   for (let i= 0; i<20 ; i++) {
     ellipses [i] = new Ellipse ( random (width));
-                               
+
   }
     bubble1= new Bubble( 60,110, 90, 90);
     bubble2= new Bubble( 90,180, 80, 80);
     bubble3= new Bubble( 120,210, 10, 10 );
 
   angleMode(RADIANS);
-  
-  
+
+  createButton("Start").mousePressed(startKetch);
+  //button.style ("padding","20px");
+  //button.style ("background-color","#f598bd");
 
 
+}
+
+function startKetch(){
   //Audio input
   mic = new p5.AudioIn()
   mic.start();
+  sketchStarted = true;
 }
 
 
 
+
 function draw() {
+
+if (sketchStarted){
+
+micLevel = mic.getLevel(0.05);
+//console.log("mic level"+ mic.getLevel());
+
   background (0);
-  
+
 
   let hr = hour ();
   let mn = minute ();
   let sc = second ();
-  
+
   fill (255);
   noStroke ();
   textSize (90);
   text (hr + ':' + mn + ':' + sc, 200, 70)
 
-  
+
   for (let i= 0; i<9 ; i++) {
    ellipses [i].display ();
     ellipses[i].grow();
   }
-  
+
   drawEllipse (r);
-  
+
 bubble1.move();
-bubble1.show();    
+bubble1.show();
 bubble2.move();
 bubble2.show();
 bubble3.move();
 bubble3.show();
 
-  micLevel = mic.getLevel();
+
 
   //console.log("mouse x is : " + mouseX);
   //console.log("mouse y is : " + mouseY);
 
-  //console.log("mic level"+ mic.getLevel());
+
 
 
   angleWave = map(mic.getLevel(), 0, 0.05, 250, 260);
@@ -94,32 +107,32 @@ bubble3.show();
   //drawBubble();
 
   //image(img,0,0);
-  
+
   if (mouseIsPressed) {
-    
+
     fill("lightBlue");
     ellipse(mouseX, mouseY, 40, 40);
-    
+
     fill ("pink");
-    
+
     textSize(20);
     text('Good Bye!', 70, 90);
-    
+
   } else {
     noFill;
     stroke ("red");
   smooth();
-    
+
     ellipse(mouseX, mouseY, 40, 40);
     fill ("lightGreen");
     ellipse(mouseX, mouseY, 20, 20);
-    
+
     fill ("pink");
     textSize(30);
     text('Hello', 70, 90);
   }
 }
-
+}
 
 
 
@@ -128,17 +141,17 @@ function mousePressed() {
   if (mouseX > 100 && mouseX < 300 && mouseY > 100 && mouseY < 250) {
     // console.log(" mouse peep in here");
     colorWhite = !colorWhite;
-  } 
+  }
 }
 
 
 function drawEllipse (_r) {
   fill (255);
    // draw the ellipse with radius _r
-  
+
   ellipse (370, 180, _r);
 }
- 
+
 
 function drawRightPupil() {
   //right pupil
@@ -178,11 +191,11 @@ function drawLeftWhiteEye() {
 }
 
 function drawRightHand() {
-  
-  
-  
+
+
+
   //right hand
-  
+
   fill(240, 191, 144);
   noStroke();
   beginShape();
@@ -216,7 +229,7 @@ function drawBody() {
 }
 
 function drawLeftHand() {
-  
+
   //left hand
 
   angleMode(DEGREES);
@@ -226,7 +239,7 @@ function drawLeftHand() {
   translate(-90, 250);
   rotate(angleWave);
   angle = angle + 1;
-  
+
   fill(240, 191, 144);
   noStroke();
   rect(-30, 190, 80, 10);
@@ -244,7 +257,3 @@ function drawLegs() {
   rect(120, 300, 20, 70);
   rect(250, 300, 20, 70);
 }
-
-
-
-
